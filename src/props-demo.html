@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Props Demo</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 50px;
+      background: f5f5f5;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      text-align: center;
+      color: 002970;
+      margin-bottom: 40px;
+    }
+    
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    
+    .product-card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: all 0.3s;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+    
+    .product-icon {
+      font-size: 60px;
+      margin: 20px 0;
+    }
+    
+    .product-name {
+      font-size: 22px;
+      font-weight: bold;
+      color: 333;
+      margin: 10px 0;
+    }
+    
+    .product-price {
+      font-size: 28px;
+      color: 00C851;
+      font-weight: bold;
+      margin: 15px 0;
+    }
+    
+    .product-rating {
+      color: ffd700;
+      font-size: 18px;
+      margin: 10px 0;
+    }
+    
+    .buy-button {
+      background: 002970;
+      color: black;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 15px;
+      transition: all 0.3s;
+    }
+    
+    .buy-button:hover {
+      background: 00BAF2;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    // CHILD COMPONENT - Receives props
+    function ProductCard(props) {
+      // props.name
+      // props.price
+      // props.icon
+      // props.rating
+      
+      return (
+        <div className="product-card">
+          <div className="product-icon">{props.icon}</div>
+          <div className="product-name">{props.name}</div>
+          <div className="product-price">₹{props.price}</div>
+          <div className="product-rating">
+            {"⭐".repeat(props.rating)}
+          </div>
+          <button className="buy-button" onClick={() => alert(`Buying ${props.name}!`)}>
+            🛒 Buy Now
+          </button>
+        </div>
+      );
+    }
+    
+    // PARENT COMPONENT - Passes props
+    function App() {
+      return (
+        <div className="container">
+          <h1>🛍️ Paytm Mall - Props Demo</h1>
+          
+          <div className="products-grid">
+            {/* Each ProductCard receives PROPS */}
+            
+            <ProductCard 
+              name="iPhone 14"
+              price="79999"
+              icon="📱"
+              rating={5}
+            />
+            
+            <ProductCard 
+              name="Samsung S23"
+              price="74999"
+              icon="📱"
+              rating={4}
+            />
+            
+            <ProductCard 
+              name="OnePlus 11"
+              price="56999"
+              icon="📱"
+              rating={4}
+            />
+            
+            <ProductCard 
+              name="Laptop"
+              price="45999"
+              icon="💻"
+              rating={5}
+            />
+            
+            <ProductCard 
+              name="Headphones"
+              price="2999"
+              icon="🎧"
+              rating={3}
+            />
+            
+            <ProductCard 
+              name="Smart Watch"
+              price="12999"
+              icon="⌚"
+              rating={4}
+            />
+          </div>
+        </div>
+      );
+    }
+    
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>

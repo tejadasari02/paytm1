@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Paytm Wallet - State</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 50px;
+      background: linear-gradient(135deg, 00BAF2 0%, 002970 100%);
+      min-height: 100vh;
+      margin: 0;
+    }
+    
+    .wallet-container {
+      max-width: 500px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+    
+    .wallet-balance {
+      text-align: center;
+      margin: 30px 0;
+    }
+    
+    .balance-label {
+      font-size: 18px;
+      color: 666;
+      margin-bottom: 10px;
+    }
+    
+    .balance-amount {
+      font-size: 60px;
+      font-weight: bold;
+      color: 00C851;
+    }
+    
+    .transaction-section {
+      margin: 30px 0;
+    }
+    
+    input {
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+      border: 2px solid ddd;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    button {
+      flex: 1;
+      padding: 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+    
+    .btn-add {
+      background: 00C851;
+      color: white;
+    }
+    
+    .btn-pay {
+      background: ff6b6b;
+      color: white;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    
+    .history {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 2px solid eee;
+    }
+    
+    .history-item {
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      background: f8f9fa;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .credit {
+      color: 00C851;
+      font-weight: bold;
+    }
+    
+    .debit {
+      color: ff6b6b;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    function PaytmWallet() {
+      // STATE 1: Wallet balance (starts at 1000)
+      const [balance, setBalance] = React.useState(1000);
+      
+      // STATE 2: Input amount
+      const [amount, setAmount] = React.useState('');
+      
+      // STATE 3: Transaction history
+      const [history, setHistory] = React.useState([]);
+      
+      // Function to add money
+      function addMoney() {
+        const addAmount = Number(amount);
+        
+        if (addAmount > 0) {
+          // Update balance
+          setBalance(balance + addAmount);
+          
+          // Add to history
+          setHistory([
+            ...history,
+            { type: 'credit', amount: addAmount, time: new Date().toLocaleTimeString() }
+          ]);
+          
+          // Clear input
+          setAmount('');
+        } else {
+          alert('Please enter valid amount!');
+        }
+      }
+      
+      // Function to pay/deduct money
+      function payMoney() {
+        const payAmount = Number(amount);
+        
+        if (payAmount > 0) {
+          if (balance >= payAmount) {
+            // Update balance
+            setBalance(balance - payAmount);
+            
+            // Add to history
+            setHistory([
+              ...history,
+              { type: 'debit', amount: payAmount, time: new Date().toLocaleTimeString() }
+            ]);
+            
+            // Clear input
+            setAmount('');
+          } else {
+            alert('❌ Insufficient balance!');
+          }
+        } else {
+          alert('Please enter valid amount!');
+        }
+      }
+      
+      return (
+        <div className="wallet-container">
+          <h1 style={{textAlign: 'center', color: '002970'}}>
+            💰 Paytm Wallet
+          </h1>
+          
+          {/* Display Balance (STATE) */}
+          <div className="wallet-balance">
+            <div className="balance-label">Current Balance</div>
+            <div className="balance-amount">₹{balance}</div>
+          </div>
+          
+          {/* Transaction Section */}
+          <div className="transaction-section">
+            <input 
+              type="number" 
+              placeholder="Enter amount"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
+            
+            <div className="button-group">
+              <button className="btn-add" onClick={addMoney}>
+                ➕ Add Money
+              </button>
+              <button className="btn-pay" onClick={payMoney}>
+                💳 Pay
+              </button>
+            </div>
+          </div>
+          
+          {/* Transaction History (STATE) */}
+          {history.length > 0 && (
+            <div className="history">
+              <h3>Transaction History</h3>
+              {history.map((txn, index) => (
+                <div key={index} className="history-item">
+                  <span>
+                    {txn.type === 'credit' ? '➕ Added' : '➖ Paid'}
+                  </span>
+                  <span className={txn.type}>
+                    ₹{txn.amount}
+                  </span>
+                  <span style={{fontSize: '12px', color: '888'}}>
+                    {txn.time}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+    
+    ReactDOM.render(<PaytmWallet />, document.getElementById('root'));
+  </script>
+</body>
+</html>
