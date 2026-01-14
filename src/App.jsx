@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import WalletCounter from "./walletcounter";
 import Togglepassword from './togglepassword';
-import Billreminder from './billreminder';
+import Billreminder from './Billreminder';
 import Paytmoffers from './Paytmoffers';
 import RechargeHistory from './RechargeHistory';
 import Products from './ProductSearch';
@@ -14,14 +14,16 @@ function App() {
 
   return (
     <>
-    {/* <WalletCounter/>
-    <Togglepassword/>
+    <Products/>
+     {/* <WalletCounter/>
+    <Togglepassword/> */}
 
-   <Billreminder/> */}
-   {/* <Paytmoffers/> */}
-   {/* <RechargeHistory/> */}
-   <Products/>
-   <Shoping/>
+   {/* <Billreminder/> 
+   <Paytmoffers/> 
+    <RechargeHistory/> 
+  
+   <Shoping/> */}
+   
     </>
   )
 }
